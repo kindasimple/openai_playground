@@ -15,7 +15,16 @@ Usage:
 import sys
 import openai
 import os
+import random
 
+MODELS = [
+    "text-davinci-003",
+    "text-curie-001",
+    "text-babbage-001",
+    "text-ada-001",
+    "code-davinci-002",
+    "code-cushman-001",
+]
 
 def main():
     # Print the instructions
@@ -28,8 +37,9 @@ def main():
     print(f"Received the following input:\n{input_str}")
 
     openai.api_key = os.getenv("OPENAI_API_KEY")
+    model_selection = random.choice(MODELS)
     response = openai.Completion.create(
-        model="code-davinci-002",
+        model=model_selection,
         prompt=f"{input_str}\n\n# An elaborate, high quality docstring for the above function:\n\"\"\"",
         temperature=0,
         max_tokens=150,
@@ -40,7 +50,7 @@ def main():
     )
 
     for num, choice in enumerate(response["choices"], start=1):
-        print(f"Docstring Option #{num}:")
+        print(f"Docstring Option #{num} using {model_selection}:")
         print(choice["text"])
 
 
