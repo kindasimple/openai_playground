@@ -47,6 +47,21 @@ Q: {prompt}
 A:
 """
 
+PYTHON_EXPLAIN = """
+# Python 3
+{prompt}
+
+# Explanation of what the code does
+
+#
+"""
+
+TLDR = """
+{prompt}
+
+Tl;dr
+"""
+
 GRAMMAR_PROMPT = "Correct this to standard English:\n\n{prompt}"
 
 @click.command()
@@ -55,15 +70,11 @@ GRAMMAR_PROMPT = "Correct this to standard English:\n\n{prompt}"
 @click.option('--model', default="", help='The model to use')
 def main(example: str, prompt: str, model: str):
     # save the prompt fragment for later reporting since we need to tweak it
-    input_prompt = prompt
     kwargs = DEFAULT_KWARGS.copy()
 
     # Read the input string
     if not prompt:
         prompt = sys.stdin.read()
-
-    # Do something with the input string
-    print(f"Received the following input:\n{prompt}")
 
     openai.api_key = os.getenv("OPENAI_API_KEY")
 
@@ -75,6 +86,13 @@ def main(example: str, prompt: str, model: str):
         prompt = QA_PROMPT.format(prompt=prompt)
     elif example == "grammar":
         prompt = GRAMMAR_PROMPT.format(prompt=prompt)
+    elif example == "py-explain":
+        prompt = PYTHON_EXPLAIN.format(prompt=prompt)
+    elif example == "tldr":
+        prompt = TLDR.format(prompt=prompt)
+        kwargs["presence_penalty"] = 1
+        kwargs["max_tokens"] = 60
+
     if not model:
         model = MODEL_DEFAULTS.get(example, random.choice(MODELS))
 
@@ -86,7 +104,6 @@ def main(example: str, prompt: str, model: str):
 
     for num, choice in enumerate(response["choices"], start=1):
         print(f"Example {example.upper()} Result Option #{num} using {model}:")
-        print(input_prompt)
         print(choice["text"])
 
 

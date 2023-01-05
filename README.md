@@ -15,6 +15,34 @@ echo -e "# Python 3.7\n \ndef tasty_cake(name: str, cost: decimal):\n    print(f
 python play.py --example="qa" --prompt="What is the largest country in the world?"
 ```
 
+
+## --example=tldr
+
+summarize text
+
+```
+python play.py --example="tldr" --prompt "A neutron star is the collapsed core of a massive supergiant star, which had a total mass of between 10 and 25 solar masses, possibly more if the star was especially metal-rich.[1] Neutron stars are the smallest and densest stellar objects, excluding black holes and hypothetical white holes, quark stars, and strange stars.[2] Neutron stars have a radius on the order of 10 kilometres (6.2 mi) and a mass of about 1.4 solar masses.[3] They result from the supernova explosion of a massive star, combined with gravitational collapse, that compresses the core past white dwarf star density to that of atomic nuclei."
+
+Example TLDR Result Option #1 using text-ada-001:
+
+A neutron star is the collapsed core of a massive supergiant star. It has a radius of 10 kilometers and a mass of 1.4 solar masses.
+```
+
+## --example=py-explain
+
+Create a python docstring for a function
+
+Examples
+
+```
+# run the script to prompt for input
+python play.py --example="py-explain" --prompt "# Python 3.7\n \ndef tasty_cake(name: str, cost: decimal):\n    print(f'The {name} cake costs \${cost:.2f}')"
+
+# The function tasty_cake takes two arguments: name and cost.
+# The function prints the string The followed by the name of the cake and the cost of the cake.
+# The cost of the cake is formatted to two decimal places.
+```
+
 ## --example=docstring
 
 Create a python docstring for a function
