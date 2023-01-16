@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 """
 Use ChatGPT to write a python program that uses the OpenAI api to create
 docstrings for python functions
@@ -62,6 +62,11 @@ TLDR = """
 Tl;dr
 """
 
+SENTIMENT = """
+Classify the sentiment in this tweet:
+{prompt}
+"""
+
 GRAMMAR_PROMPT = "Correct this to standard English:\n\n{prompt}"
 
 @click.command()
@@ -90,8 +95,9 @@ def main(example: str, prompt: str, model: str):
         prompt = PYTHON_EXPLAIN.format(prompt=prompt)
     elif example == "tldr":
         prompt = TLDR.format(prompt=prompt)
-        kwargs["presence_penalty"] = 1
-        kwargs["max_tokens"] = 60
+        kwargs = { "presence_penalty": 1, "max_tokens": 60, }
+    elif example == "twitter-sentiment":
+        prompt = SENTIMENT.format(prompt=prompt)
 
     if not model:
         model = MODEL_DEFAULTS.get(example, random.choice(MODELS))
